@@ -1403,3 +1403,91 @@ footer {
 /* ─── Utility ─── */
 .text-accent { color: var(--accent); }
 .text-muted { color: var(--ink-2); }
+
+/* ─── Mobile refinements ──────────────────────────────────────────────── */
+@media (max-width: 880px) {
+  html { scroll-padding-top: 68px; }
+  .nav-inner { height: 64px; }
+  .brand { font-size: 16px; gap: 10px; }
+  .brand-mark { width: 32px; height: 32px; font-size: 13px; }
+  .brand .gmbh { font-size: 12px; }
+  .nav-cta .btn { padding: 10px 16px; font-size: 14px; }
+
+  /* Sticky panels become normal flow when stacked */
+  .calc-summary,
+  .form-side,
+  .wa-preview { position: static; top: auto; }
+
+  /* Hero: shorter image, callout pulled inside viewport */
+  .hero-display { aspect-ratio: 3/4; border-radius: 18px; }
+  .hero-callout { left: 12px; top: 14px; font-size: 13px; padding: 10px 14px; }
+  .hero-display .badge { bottom: 14px; right: 14px; padding: 10px 14px; max-width: calc(100% - 28px); }
+  .hero-display .badge .txt strong { font-size: 13px; }
+  .hero-display .badge .txt span { font-size: 11px; }
+  .hero-meta { gap: 20px; }
+  .hero-meta .stat .num { font-size: 24px; }
+
+  /* Buttons & CTAs full width on small */
+  .hero-ctas .btn,
+  .pt-actions .btn,
+  .form-success-actions .btn { flex: 1 1 100%; justify-content: center; }
+  .hero-ctas, .pt-actions, .form-success-actions { width: 100%; }
+
+  /* Service & process cards: tighter padding */
+  .service { padding: 28px 22px; min-height: auto; }
+  .process { border-radius: 22px; margin-left: 12px; margin-right: 12px; padding: 32px 22px; }
+
+  /* CTA banner + form banner padding */
+  .cta-banner, .form-banner { padding: 32px 22px; border-radius: 22px; }
+
+  /* Gallery: equalize aspect */
+  .gallery-grid { gap: 12px; }
+
+  /* Footer stays 2-col until 480 */
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+
+  /* WhatsApp FAB: smaller, doesn't crowd content */
+  .whats-fab { width: 52px; height: 52px; bottom: 18px; left: 18px; }
+  .whats-fab svg { width: 26px; height: 26px; }
+}
+
+@media (max-width: 560px) {
+  :root { --pad: 18px; }
+  body { font-size: 15px; }
+
+  .nav-cta { gap: 6px; }
+  .nav-cta .btn-accent { padding: 9px 14px; font-size: 13px; }
+
+  .hero { padding-top: 32px; padding-bottom: 48px; }
+  .hero-display { aspect-ratio: 1/1; }
+  .hero-meta { gap: 16px; }
+  .hero-meta .stat { flex: 1 1 40%; }
+
+  section { padding: 56px 0; }
+
+  /* Footer: single column on very small */
+  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+
+  /* Calc/form/wa: lighter padding */
+  .calc-form, .calc-summary, .wa-compose, .form-side-card { padding: 22px; border-radius: 18px; }
+  .calc-price-num { font-size: 36px; }
+
+  /* Process steps without horizontal margin */
+  .process { margin-left: 0; margin-right: 0; border-radius: 18px; padding: 28px 20px; }
+
+  /* CTA card spacing */
+  .cta-card { padding: 22px; }
+
+  /* Tap targets */
+  .calc-tab { padding: 12px 6px; font-size: 12px; }
+  .calc-seg { padding: 11px 14px; font-size: 13px; }
+}
+
+@media (max-width: 380px) {
+  h1 { font-size: 34px; }
+  .brand .gmbh { display: none; }
+  .nav-cta .btn-accent { padding: 8px 12px; }
+}
+
+/* Prevent horizontal scroll from any overflowing element */
+html, body { overflow-x: hidden; }
