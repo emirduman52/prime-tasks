@@ -17,22 +17,9 @@ const Icon = {
 
 // ─── Brand mark ───
 function BrandMark({ logoStyle }) {
-  if (logoStyle === 'wordmark') {
-    return (
-      <div className="brand">
-        <div className="brand-mark">PT</div>
-        <span>Prime Tasks <span className="gmbh">GmbH</span></span>
-      </div>
-    );
-  }
-  // monogram only
   return (
     <div className="brand">
-      <svg width="36" height="36" viewBox="0 0 36 36" style={{borderRadius:10}}>
-        <rect width="36" height="36" rx="10" fill="var(--brand)"/>
-        <path d="M8 24V12h6.5a4 4 0 0 1 0 8H12v4h-4z M14 16h-2v2h2z" fill="#fff"/>
-        <rect x="8" y="26" width="20" height="2" rx="1" fill="var(--accent)"/>
-      </svg>
+      <img className="brand-logo" src="uploads/logo-mark.png" alt="Prime Tasks GmbH" width="40" height="40" />
       <span>Prime Tasks <span className="gmbh">GmbH</span></span>
     </div>
   );
@@ -72,13 +59,13 @@ function Hero({ heroVariant }) {
     <header className="hero" data-screen-label="Hero">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <span className="eyebrow">Handwerk &amp; Service · Region Berlin</span>
+          <span className="eyebrow">Handwerk &amp; Service für Privathaushalte · Region München</span>
           <h1 style={{marginTop: 18}}>
             Alles aus <span style={{color:'var(--accent)'}}>einer Hand.</span><br/>
             Fachgerecht &amp; termintreu.
           </h1>
           <p className="hero-lead">
-            Prime Tasks ist Ihr flexibler Rundum&#8209;Service für Zuhause und Immobilie —
+            Prime Tasks ist Ihr flexibler Rundum&#8209;Service für Privathaushalte —
             von der Grundreinigung bis zur kompletten Renovierung. Ein Anruf, ein Team,
             ein fester Termin.
           </p>
@@ -105,7 +92,7 @@ function Hero({ heroVariant }) {
         <div className="hero-display">
           <img
             className="hero-img"
-            src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80"
+            src="uploads/photos/reinigung.jpg"
             alt="Handwerker bei der Arbeit"
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
@@ -227,28 +214,28 @@ function Process() {
 function Gallery() {
   const tiles = [
     { cls: 't1', cat: 'Reinigung', cap: 'Grundreinigung · 80 m² Altbau', alt: '',
-      img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80' },
+      img: 'uploads/photos/reinigung.jpg' },
     { cls: 't2 alt', cat: 'Notdienst', cap: 'Abfluss-Sanierung · Küchenzeile', alt: 'alt',
-      img: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?auto=format&fit=crop&w=1200&q=80' },
+      img: 'uploads/photos/notdienst.jpg' },
     { cls: 't3', cat: 'Montage', cap: 'Einbauküche · 6 Schränke', alt: '',
-      img: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=900&q=80' },
+      img: 'uploads/photos/montage-kueche.jpg' },
     { cls: 't4 dark', cat: 'Renovierung', cap: 'Wandbeschichtung · 3-Zimmer-Wohnung', alt: 'dark',
-      img: 'https://images.unsplash.com/photo-1562259949-e8e7689d7828?auto=format&fit=crop&w=900&q=80' },
+      img: 'uploads/photos/renovierung.jpg' },
     { cls: 't5', cat: 'Montage', cap: 'Fensterreparatur · Holzrahmen', alt: '',
-      img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=900&q=80' },
+      img: 'uploads/photos/fenster.jpg' },
   ];
   return (
     <section id="referenzen" data-screen-label="Referenzen">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Einblicke</span>
-            <h2>Eindrücke aus<br/>echten Projekten.</h2>
+            <span className="eyebrow">Beispielhafte Bilder</span>
+            <h2>Eindrücke aus<br/>unserem Leistungsspektrum.</h2>
           </div>
           <div className="lead">
             <p>
-              Ein kleiner Ausschnitt aus dem Arbeitsalltag — vom kurzen Einsatz
-              bis zur kompletten Wohnungsrenovierung.
+              Ein kleiner Ausschnitt unserer Leistungen — vom kurzen Einsatz
+              bis zur kompletten Wohnungsrenovierung. Beispielhafte Bilder.
             </p>
           </div>
         </div>
@@ -284,7 +271,7 @@ function Values() {
         <div className="values">
           <div className="value">
             <div className="k">Schnell</div>
-            <p>Notdienst-Reaktion innerhalb von 24 Stunden. Akute Wasserschäden? Meist in unter 2 Stunden vor Ort im Berliner Stadtgebiet.</p>
+            <p>Notdienst-Reaktion innerhalb von 24 Stunden. Akute Wasserschäden? Meist in unter 2 Stunden vor Ort im Münchner Stadtgebiet.</p>
           </div>
           <div className="value">
             <div className="k">Sicher</div>
@@ -351,7 +338,7 @@ function Footer() {
           <div>
             <BrandMark logoStyle="monogram" />
             <p style={{marginTop:16, color:'var(--ink-2)', fontSize:14, maxWidth:'32ch'}}>
-              Ihr Rundum-Service für Haus, Wohnung und Immobilie — schnell, sicher, zuverlässig.
+              Ihr Rundum-Service für Privathaushalte — für Haus und Wohnung, schnell, sicher und zuverlässig.
             </p>
           </div>
           <div>
@@ -377,7 +364,7 @@ function Footer() {
             <ul>
               <li>+49 1512 9778866</li>
               <li>hallo@primetasks.de</li>
-              <li>Berlin &amp; Umgebung</li>
+              <li>München &amp; Umgebung</li>
             </ul>
           </div>
         </div>

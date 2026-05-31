@@ -125,17 +125,9 @@ p  { margin: 0; text-wrap: pretty; }
   font-family: var(--font-display); font-weight: 600; font-size: 18px;
   letter-spacing: -0.01em;
 }
-.brand-mark {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--brand); color: #fff;
-  display: grid; place-items: center;
-  font-family: var(--font-display); font-weight: 700; font-size: 14px;
-  letter-spacing: 0;
-  position: relative;
-}
-.brand-mark::after {
-  content: ""; position: absolute; inset: auto 6px 6px 6px; height: 2px;
-  background: var(--accent); border-radius: 2px;
+.brand-logo {
+  width: 40px; height: 40px; object-fit: contain; display: block;
+  flex-shrink: 0;
 }
 .brand .gmbh { color: var(--ink-3); font-weight: 500; font-size: 13px; margin-left: 2px; }
 .nav-links {
@@ -1192,6 +1184,12 @@ footer {
   width: 44px; height: 44px;
 }
 .wa-avatar.small { width: 36px; height: 36px; }
+.wa-avatar-img {
+  width: 100%; height: 100%; border-radius: 50%;
+  object-fit: contain; background: #fff;
+  padding: 3px; box-sizing: border-box;
+  box-shadow: 0 0 0 1px var(--line) inset;
+}
 .wa-online {
   position: absolute; bottom: 0; right: 0;
   width: 12px; height: 12px; border-radius: 50%;
@@ -1409,7 +1407,7 @@ footer {
   html { scroll-padding-top: 68px; }
   .nav-inner { height: 64px; }
   .brand { font-size: 16px; gap: 10px; }
-  .brand-mark { width: 32px; height: 32px; font-size: 13px; }
+  .brand-logo { width: 34px; height: 34px; }
   .brand .gmbh { font-size: 12px; }
   .nav-cta .btn { padding: 10px 16px; font-size: 14px; }
 

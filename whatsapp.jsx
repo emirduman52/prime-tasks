@@ -94,10 +94,7 @@ function WhatsAppChatWidget() {
           <div className="wa-compose">
             <div className="wa-compose-head">
               <div className="wa-avatar">
-                <svg viewBox="0 0 36 36" width="44" height="44" style={{borderRadius:'50%'}}>
-                  <rect width="36" height="36" rx="18" fill="var(--brand)"/>
-                  <path d="M9 25V11h6.5a4 4 0 0 1 0 8H13v6z M15 15h-2v2h2z" fill="#fff"/>
-                </svg>
+                <img className="wa-avatar-img" src="uploads/logo-mark.png" alt="Prime Tasks GmbH" />
                 <span className="wa-online" aria-label="online"></span>
               </div>
               <div>
@@ -161,10 +158,7 @@ function WhatsAppChatWidget() {
             <header className="wa-preview-head">
               <button className="wa-back" aria-hidden="true">‹</button>
               <div className="wa-avatar small">
-                <svg viewBox="0 0 36 36" width="36" height="36" style={{borderRadius:'50%'}}>
-                  <rect width="36" height="36" rx="18" fill="#11305c"/>
-                  <path d="M9 25V11h6.5a4 4 0 0 1 0 8H13v6z M15 15h-2v2h2z" fill="#fff"/>
-                </svg>
+                <img className="wa-avatar-img" src="uploads/logo-mark.png" alt="Prime Tasks GmbH" />
               </div>
               <div className="wa-head-meta">
                 <strong>Prime Tasks GmbH</strong>

@@ -1,5 +1,5 @@
 // ─── Prime Tasks — Kostenrechner ──────────────────────────────────────────
-// Configurable price estimator. Ranges are based on typical Berlin market
+// Configurable price estimator. Ranges are based on typical München market
 // rates (2026, ungefährer Richtwert) — easy to tune in PRICING below.
 
 const PRICING = {
@@ -388,7 +388,7 @@ function Calculator() {
 
             <p className="calc-disclaimer">
               <Icon.Check/> Ungefährer Richtwert auf Basis typischer Aufträge. Materialkosten,
-              Anfahrten außerhalb Berlin und Sonderfälle werden separat ausgewiesen. Verbindlicher
+              Anfahrten außerhalb München und Sonderfälle werden separat ausgewiesen. Verbindlicher
               Festpreis nach Foto-Anfrage.
             </p>
           </aside>
