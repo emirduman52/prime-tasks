@@ -371,6 +371,9 @@ function Footer() {
         <div className="footer-bottom">
           <span>© 2026 Prime Tasks GmbH</span>
           <span>Impressum · Datenschutz · AGB</span>
+          <span className="footer-credit">
+            Designed by <a href="https://amano.agency" target="_blank" rel="noopener">Amano Agency</a>
+          </span>
         </div>
       </div>
     </footer>
