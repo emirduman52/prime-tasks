@@ -139,7 +139,7 @@ const SERVICES = [
     icon: <Icon.Roller/>,
     iconClass: 'green',
     title: 'Renovierung',
-    items: ['Malerarbeiten', 'Fliesenlegung', 'Bodenverlegung'],
+    items: ['Malerarbeiten', 'Vinylboden verlegen', 'Laminat verlegen'],
   },
 ];
 
@@ -192,7 +192,7 @@ function Process() {
           <div className="step">
             <span className="num">01 · ANFRAGE</span>
             <h3>Per WhatsApp oder Anruf</h3>
-            <p>Sie schicken uns Fotos und beschreiben kurz das Problem. Antwort meist innerhalb von 2 Stunden — werktags wie am Wochenende.</p>
+            <p>Sie schicken uns Fotos und beschreiben kurz das Problem. Antwort meist innerhalb von 4 Stunden — werktags wie am Wochenende.</p>
           </div>
           <div className="step">
             <span className="num">02 · TERMIN</span>
@@ -298,7 +298,7 @@ function CTA() {
             <h2 style={{marginTop: 18}}>Schreiben Sie uns —<br/>am liebsten per WhatsApp.</h2>
             <p>
               Schicken Sie ein paar Fotos und eine kurze Beschreibung. Wir antworten
-              werktags innerhalb von 2 Stunden mit einem konkreten Festpreis und Termin.
+              werktags innerhalb von 4 Stunden mit einem konkreten Festpreis und Termin.
             </p>
             <div style={{display:'flex', gap:12, marginTop:32, flexWrap:'wrap'}}>
               <a href="https://wa.me/4915129778866" className="btn btn-whats">

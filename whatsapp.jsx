@@ -15,8 +15,8 @@ const WA_SERVICE_OPTIONS = [
   { value: 'Montage · Rollläden',                 label: 'Montage · Rollläden' },
   { value: 'Montage · Fenster',                   label: 'Montage · Fenster' },
   { value: 'Renovierung · Malerarbeiten',         label: 'Renovierung · Malerarbeiten' },
-  { value: 'Renovierung · Fliesen',               label: 'Renovierung · Fliesen' },
-  { value: 'Renovierung · Boden',                 label: 'Renovierung · Boden' },
+  { value: 'Renovierung · Vinylboden',            label: 'Renovierung · Vinylboden' },
+  { value: 'Renovierung · Laminat',               label: 'Renovierung · Laminat' },
   { value: 'Beratung / Sonstiges',                label: 'Beratung / Sonstiges' },
 ];
 
@@ -44,8 +44,8 @@ function WhatsAppChatWidget() {
           'montage-rolladen':   'Montage · Rollläden',
           'montage-fenster':    'Montage · Fenster',
           'renov-maler':        'Renovierung · Malerarbeiten',
-          'renov-fliesen':      'Renovierung · Fliesen',
-          'renov-boden':        'Renovierung · Boden',
+          'renov-vinyl':        'Renovierung · Vinylboden',
+          'renov-laminat':      'Renovierung · Laminat',
         };
         if (p.service && calcServiceLabels[p.service]) setService(calcServiceLabels[p.service]);
         if (p.message) setMessage(p.message);
@@ -78,12 +78,12 @@ function WhatsAppChatWidget() {
         <div className="section-head">
           <div>
             <span className="eyebrow">Direkt schreiben</span>
-            <h2>Antwort in unter 2&nbsp;Stunden —<br/>direkt per WhatsApp.</h2>
+            <h2>Antwort in unter 4&nbsp;Stunden —<br/>direkt per WhatsApp.</h2>
           </div>
           <div className="lead">
             <p>
               Wählen Sie Ihre Leistung, schicken Sie ein paar Sätze und am liebsten ein
-              Foto direkt im Chat. Wir antworten werktags innerhalb von zwei Stunden mit
+              Foto direkt im Chat. Wir antworten werktags innerhalb von vier Stunden mit
               Festpreis und Termin.
             </p>
           </div>
@@ -99,7 +99,7 @@ function WhatsAppChatWidget() {
               </div>
               <div>
                 <strong>Prime Tasks GmbH</strong>
-                <span>Antwortet meist innerhalb von 2 Stunden</span>
+                <span>Antwortet meist innerhalb von 4 Stunden</span>
               </div>
             </div>
 

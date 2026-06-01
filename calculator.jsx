@@ -97,17 +97,17 @@ const PRICING = {
         base: { min: 80, max: 120 },
         input: { min: 10, max: 400, step: 5, def: 80, label: 'Wandfläche' },
       },
-      fliesen: {
-        label: 'Fliesenlegung (ohne Material)',
+      vinyl: {
+        label: 'Vinylboden verlegen (ohne Material)',
         unit: 'm²',
-        per: { min: 40, max: 90 },
-        base: { min: 100, max: 150 },
-        input: { min: 2, max: 80, step: 1, def: 10, label: 'Fläche' },
+        per: { min: 18, max: 35 },
+        base: { min: 80, max: 120 },
+        input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
       },
-      boden: {
-        label: 'Bodenverlegung (ohne Material)',
+      laminat: {
+        label: 'Laminat verlegen (ohne Material)',
         unit: 'm²',
-        per: { min: 20, max: 50 },
+        per: { min: 15, max: 30 },
         base: { min: 80, max: 120 },
         input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
       },
