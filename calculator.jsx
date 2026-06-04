@@ -111,6 +111,13 @@ const PRICING = {
         base: { min: 80, max: 120 },
         input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
       },
+      parkett: {
+        label: 'Parkett schwimmend verlegen (ohne Material)',
+        unit: 'm²',
+        per: { min: 20, max: 40 },
+        base: { min: 80, max: 120 },
+        input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
+      },
     },
   },
 };

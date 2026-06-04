@@ -17,6 +17,7 @@ const WA_SERVICE_OPTIONS = [
   { value: 'Renovierung · Malerarbeiten',         label: 'Renovierung · Malerarbeiten' },
   { value: 'Renovierung · Vinylboden',            label: 'Renovierung · Vinylboden' },
   { value: 'Renovierung · Laminat',               label: 'Renovierung · Laminat' },
+  { value: 'Renovierung · Parkett (schwimmend)',  label: 'Renovierung · Parkett (schwimmend)' },
   { value: 'Beratung / Sonstiges',                label: 'Beratung / Sonstiges' },
 ];
 
@@ -46,6 +47,7 @@ function WhatsAppChatWidget() {
           'renov-maler':        'Renovierung · Malerarbeiten',
           'renov-vinyl':        'Renovierung · Vinylboden',
           'renov-laminat':      'Renovierung · Laminat',
+          'renov-parkett':      'Renovierung · Parkett (schwimmend)',
         };
         if (p.service && calcServiceLabels[p.service]) setService(calcServiceLabels[p.service]);
         if (p.message) setMessage(p.message);
@@ -149,7 +151,7 @@ function WhatsAppChatWidget() {
 
             <div className="wa-fallback">
               Kein WhatsApp? <a href="tel:+4915129778866">+49 1512 9778866 anrufen</a>
-              · <a href="mailto:hallo@primetasks.de">E-Mail schreiben</a>
+              · <a href="mailto:info@primetasks.de">E-Mail schreiben</a>
             </div>
           </div>
 

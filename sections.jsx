@@ -2,6 +2,11 @@
 
 const { useState, useEffect, useRef } = React;
 
+// ─── WhatsApp ───
+const WA_NUMBER = '4915129778866';
+const WA_DEFAULT_TEXT = 'Hallo Prime Tasks, ich interessiere mich für Ihre Leistungen und hätte gern ein unverbindliches Angebot.';
+const WA_LINK = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(WA_DEFAULT_TEXT)}`;
+
 // Icons - minimal stroked icons, drawn fresh
 const Icon = {
   Sparkle: () => <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 3v6M12 15v6M3 12h6M15 12h6" strokeLinecap="round"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg>,
@@ -41,7 +46,7 @@ function Nav() {
           <li><a href="#leistungen">Leistungen</a></li>
           <li><a href="#kostenrechner">Kostenrechner</a></li>
           <li><a href="#ablauf">Ablauf</a></li>
-          <li><a href="#referenzen">Referenzen</a></li>
+          <li><a href="#referenzen">Überblick</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
         <div className="nav-cta">
@@ -70,7 +75,7 @@ function Hero({ heroVariant }) {
             ein fester Termin.
           </p>
           <div className="hero-ctas">
-            <a href="https://wa.me/4915129778866" className="btn btn-whats">
+            <a href={WA_LINK} target="_blank" rel="noopener" className="btn btn-whats">
               <Icon.WhatsApp/> Per WhatsApp anfragen
             </a>
             <a href="#kostenrechner" className="btn btn-ghost">
@@ -92,8 +97,8 @@ function Hero({ heroVariant }) {
         <div className="hero-display">
           <img
             className="hero-img"
-            src="uploads/photos/reinigung.jpg"
-            alt="Handwerker bei der Arbeit"
+            src="uploads/photos/hero.jpg"
+            alt="Handwerker von Prime Tasks bei der Arbeit"
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
           <div className="placeholder">
@@ -139,7 +144,7 @@ const SERVICES = [
     icon: <Icon.Roller/>,
     iconClass: 'green',
     title: 'Renovierung',
-    items: ['Malerarbeiten', 'Vinylboden verlegen', 'Laminat verlegen'],
+    items: ['Malerarbeiten', 'Vinyl- & Laminatböden', 'Parkett (schwimmend verlegt)'],
   },
 ];
 
@@ -210,50 +215,58 @@ function Process() {
   );
 }
 
-// ─── Gallery ───
+// ─── Leistungs-Überblick (Icons) ───
+const svgP = { viewBox: '0 0 24 24', width: 22, height: 22, fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
+const OVERVIEW = [
+  { cat: 'Reinigung', ic: 'accent', label: 'Grundreinigung',
+    icon: <svg {...svgP}><path d="M9 9h5v10a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2z"/><path d="M9 9V6h4M13 6V4h-3"/><path d="M16.5 5.5h3M16.5 8h3M19.5 4l1.5-.4M19.5 9.5l1.5 .4"/></svg> },
+  { cat: 'Reinigung', ic: 'accent', label: 'Umzüge',
+    icon: <svg {...svgP}><path d="M3 8h18v11H3z"/><path d="M3 8l2-4h14l2 4"/><path d="M12 4v15"/></svg> },
+  { cat: 'Reinigung', ic: 'accent', label: 'Entrümpelung',
+    icon: <svg {...svgP}><path d="M4 7h16M6 7l1 13h10l1-13M9 7V4h6v3M10 11v6M14 11v6"/></svg> },
+  { cat: 'Notdienst', ic: '', label: 'Abflussreinigung',
+    icon: <svg {...svgP}><path d="M12 3c-2 3-4 5-4 7a4 4 0 0 0 8 0c0-2-2-4-4-7z"/><path d="M5 20h14M8 17l-1 3M16 17l1 3"/></svg> },
+  { cat: 'Notdienst', ic: '', label: 'Schimmelbeseitigung',
+    icon: <svg {...svgP}><path d="M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg> },
+  { cat: 'Notdienst', ic: '', label: 'Armaturen & WC',
+    icon: <svg {...svgP}><path d="M5 10h4v3a2 2 0 0 1-2 2 2 2 0 0 1-2-2z"/><path d="M9 11h4a3 3 0 0 1 3 3v1M9 9V8a2 2 0 0 1 2-2h2"/><path d="M16 16c1 1 1 2 0 3"/></svg> },
+  { cat: 'Montage', ic: 'dark', label: 'Möbelaufbau',
+    icon: <svg {...svgP}><path d="M14.5 4.5l5 5-2 2-5-5z"/><path d="M12.5 8.5l-8 8-1.5 4 4-1.5 8-8"/></svg> },
+  { cat: 'Montage', ic: 'dark', label: 'Rollläden',
+    icon: <svg {...svgP}><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 8.5h16M4 12h16M4 15.5h16"/></svg> },
+  { cat: 'Montage', ic: 'dark', label: 'Fenster',
+    icon: <svg {...svgP}><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M4 12h16"/></svg> },
+  { cat: 'Renovierung', ic: 'green', label: 'Malerarbeiten',
+    icon: <svg {...svgP}><rect x="3" y="5" width="14" height="6" rx="1"/><path d="M17 8h3M11 11v2H8v8"/></svg> },
+  { cat: 'Renovierung', ic: 'green', label: 'Vinyl- & Laminatböden',
+    icon: <svg {...svgP}><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9.7h18M3 14.3h18M9 5v4.7M15 9.7v4.6M9 14.3V19"/></svg> },
+  { cat: 'Renovierung', ic: 'green', label: 'Parkett (schwimmend)',
+    icon: <svg {...svgP}><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10l6-6M3 16l12-12M9 20l9-9M15 20l4-4"/></svg> },
+];
+
 function Gallery() {
-  const tiles = [
-    { cls: 't1', cat: 'Reinigung', cap: 'Grundreinigung · 80 m² Altbau', alt: '',
-      img: 'uploads/photos/reinigung.jpg' },
-    { cls: 't2 alt', cat: 'Notdienst', cap: 'Abfluss-Sanierung · Küchenzeile', alt: 'alt',
-      img: 'uploads/photos/notdienst.jpg' },
-    { cls: 't3', cat: 'Montage', cap: 'Einbauküche · 6 Schränke', alt: '',
-      img: 'uploads/photos/montage-kueche.jpg' },
-    { cls: 't4 dark', cat: 'Renovierung', cap: 'Wandbeschichtung · 3-Zimmer-Wohnung', alt: 'dark',
-      img: 'uploads/photos/renovierung.jpg' },
-    { cls: 't5', cat: 'Montage', cap: 'Fensterreparatur · Holzrahmen', alt: '',
-      img: 'uploads/photos/fenster.jpg' },
-  ];
   return (
-    <section id="referenzen" data-screen-label="Referenzen">
+    <section id="referenzen" data-screen-label="Leistungs-Überblick">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Beispielhafte Bilder</span>
-            <h2>Eindrücke aus<br/>unserem Leistungsspektrum.</h2>
+            <span className="eyebrow">Alles auf einen Blick</span>
+            <h2>Unser komplettes<br/>Leistungsspektrum.</h2>
           </div>
           <div className="lead">
             <p>
-              Ein kleiner Ausschnitt unserer Leistungen — vom kurzen Einsatz
-              bis zur kompletten Wohnungsrenovierung. Beispielhafte Bilder.
+              Vom kurzen Einsatz bis zur kompletten Wohnungsrenovierung —
+              für all das ist Prime Tasks Ihr fester Ansprechpartner.
             </p>
           </div>
         </div>
-        <div className="gallery-grid">
-          {tiles.map((t, i) => (
-            <div key={i} className={`tile ${t.cls}`}>
-              {t.img && (
-                <img
-                  className="tile-img"
-                  src={t.img}
-                  alt={t.cap}
-                  loading="lazy"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-              )}
-              <div className="ph">
-                <span className="cat">{t.cat}</span>
-                <div>{t.cap}</div>
+        <div className="icon-grid">
+          {OVERVIEW.map((s, i) => (
+            <div key={i} className="icon-tile">
+              <div className={`ic ${s.ic}`}>{s.icon}</div>
+              <div>
+                <div className="t-cat">{s.cat}</div>
+                <div className="t-label">{s.label}</div>
               </div>
             </div>
           ))}
@@ -304,7 +317,7 @@ function CTA() {
               <a href="https://wa.me/4915129778866" className="btn btn-whats">
                 <Icon.WhatsApp/> WhatsApp öffnen
               </a>
-              <a href="mailto:hallo@primetasks.de" className="btn btn-ghost" style={{borderColor:'rgba(255,255,255,.25)', color:'#fff'}}>
+              <a href="mailto:info@primetasks.de" className="btn btn-ghost" style={{borderColor:'rgba(255,255,255,.25)', color:'#fff'}}>
                 E-Mail schreiben
               </a>
             </div>
@@ -354,7 +367,7 @@ function Footer() {
             <h4>Unternehmen</h4>
             <ul>
               <li><a href="#ablauf">Ablauf</a></li>
-              <li><a href="#referenzen">Referenzen</a></li>
+              <li><a href="#referenzen">Überblick</a></li>
               <li><a href="#kontakt">Kontakt</a></li>
               <li><a href="#">Karriere</a></li>
             </ul>
@@ -363,7 +376,7 @@ function Footer() {
             <h4>Kontakt</h4>
             <ul>
               <li>+49 1512 9778866</li>
-              <li>hallo@primetasks.de</li>
+              <li>info@primetasks.de</li>
               <li>München &amp; Umgebung</li>
             </ul>
           </div>
@@ -383,7 +396,7 @@ function Footer() {
 // ─── Floating WhatsApp ───
 function WhatsFab() {
   return (
-    <a href="https://wa.me/4915129778866" className="whats-fab" aria-label="WhatsApp">
+    <a href={WA_LINK} target="_blank" rel="noopener" className="whats-fab" aria-label="WhatsApp">
       <Icon.WhatsApp/>
     </a>
   );
