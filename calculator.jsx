@@ -10,11 +10,18 @@ const PRICING = {
     icon: 'sparkle',
     tasks: {
       grund: {
-        label: 'Grundreinigung',
+        label: 'Gebäude- & Grundreinigung',
         unit: 'm²',
         per: { min: 4, max: 7 },
         base: { min: 0, max: 0 },
         input: { min: 20, max: 300, step: 5, def: 60, label: 'Wohnfläche' },
+      },
+      teppich: {
+        label: 'Teppichreinigung',
+        unit: 'm²',
+        per: { min: 5, max: 9 },
+        base: { min: 40, max: 60 },
+        input: { min: 5, max: 120, step: 1, def: 20, label: 'Teppichfläche' },
       },
       umzug: {
         label: 'Umzug (Helfer & Transport)',
@@ -33,61 +40,61 @@ const PRICING = {
     },
   },
   notdienst: {
-    label: 'Reparatur-Notdienst',
+    label: 'Notdienst & Sanierung',
     icon: 'wrench',
     tasks: {
       abfluss: {
-        label: 'Abflussreinigung',
+        label: 'Rohr- & Kanalreinigung',
         unit: 'Pauschale',
         per: { min: 0, max: 0 },
         base: { min: 90, max: 180 },
         input: null,
       },
       schimmel: {
-        label: 'Schimmelbeseitigung',
+        label: 'Schimmelentfernung',
         unit: 'm²',
         per: { min: 25, max: 60 },
         base: { min: 80, max: 120 },
         input: { min: 1, max: 30, step: 1, def: 3, label: 'Befallene Fläche' },
       },
-      armatur: {
-        label: 'Reparatur Armaturen / WC',
-        unit: 'Stück',
-        per: { min: 70, max: 180 },
-        base: { min: 60, max: 80 },
-        input: { min: 1, max: 5, step: 1, def: 1, label: 'Anzahl' },
+      trocknung: {
+        label: 'Bautrocknung (Wasserschaden)',
+        unit: 'Tag',
+        per: { min: 40, max: 70 }, // Gerät/Tag
+        base: { min: 120, max: 200 }, // Anfahrt & Aufbau
+        input: { min: 1, max: 30, step: 1, def: 5, label: 'Trocknungsdauer' },
       },
     },
   },
   montage: {
-    label: 'Montage',
+    label: 'Einbau & Montage',
     icon: 'drill',
     tasks: {
       moebel: {
-        label: 'Möbelaufbau',
+        label: 'Möbel & Regale aufbauen',
         unit: 'Möbelstück',
         per: { min: 30, max: 60 },
         base: { min: 40, max: 60 },
         input: { min: 1, max: 15, step: 1, def: 2, label: 'Möbelstücke' },
       },
-      rolladen: {
-        label: 'Rollläden-Reparatur',
-        unit: 'Stück',
-        per: { min: 80, max: 220 },
-        base: { min: 60, max: 80 },
-        input: { min: 1, max: 10, step: 1, def: 1, label: 'Anzahl Rollläden' },
-      },
       fenster: {
-        label: 'Fenster-Reparatur',
+        label: 'Fenster / Türen einbauen',
         unit: 'Stück',
-        per: { min: 60, max: 180 },
-        base: { min: 60, max: 80 },
-        input: { min: 1, max: 10, step: 1, def: 1, label: 'Anzahl Fenster' },
+        per: { min: 120, max: 350 },
+        base: { min: 80, max: 120 },
+        input: { min: 1, max: 10, step: 1, def: 1, label: 'Anzahl' },
+      },
+      trockenbau: {
+        label: 'Trockenbau (Wand / Decke)',
+        unit: 'm²',
+        per: { min: 35, max: 70 },
+        base: { min: 100, max: 150 },
+        input: { min: 2, max: 100, step: 1, def: 12, label: 'Fläche' },
       },
     },
   },
   renovierung: {
-    label: 'Renovierung',
+    label: 'Renovierung & Böden',
     icon: 'roller',
     tasks: {
       maler: {
@@ -97,22 +104,15 @@ const PRICING = {
         base: { min: 80, max: 120 },
         input: { min: 10, max: 400, step: 5, def: 80, label: 'Wandfläche' },
       },
-      vinyl: {
-        label: 'Vinylboden verlegen (ohne Material)',
+      boden: {
+        label: 'Boden verlegen (Laminat, Vinyl, PVC)',
         unit: 'm²',
-        per: { min: 18, max: 35 },
-        base: { min: 80, max: 120 },
-        input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
-      },
-      laminat: {
-        label: 'Laminat verlegen (ohne Material)',
-        unit: 'm²',
-        per: { min: 15, max: 30 },
+        per: { min: 15, max: 35 },
         base: { min: 80, max: 120 },
         input: { min: 5, max: 200, step: 5, def: 30, label: 'Bodenfläche' },
       },
       parkett: {
-        label: 'Parkett schwimmend verlegen (ohne Material)',
+        label: 'Fertigparkett schwimmend verlegen (ohne Material)',
         unit: 'm²',
         per: { min: 20, max: 40 },
         base: { min: 80, max: 120 },

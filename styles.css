@@ -479,6 +479,8 @@ footer {
   border-bottom: 1px solid transparent; transition: color .15s, border-color .15s;
 }
 .footer-credit a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.footer-legal a { color: var(--ink-2); }
+.footer-legal a:hover { color: var(--accent); }
 
 /* ─── Kostenrechner ─────────────────────────────────────────────────── */
 .calc {

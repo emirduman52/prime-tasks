@@ -123,28 +123,28 @@ const SERVICES = [
     icon: <Icon.Sparkle/>,
     iconClass: 'accent',
     title: 'Haus & Reinigung',
-    items: ['Grundreinigung', 'Umzüge', 'Entrümpelung & Entsorgung'],
+    items: ['Gebäude- & Grundreinigung', 'Teppichreinigung', 'Hausmeisterdienste', 'Umzüge & Entrümpelung', 'Müllentsorgung'],
   },
   {
     n: '02',
     icon: <Icon.Wrench/>,
     iconClass: '',
-    title: 'Reparatur-Notdienst',
-    items: ['Abflussreinigung', 'Schimmelbeseitigung', 'Reparatur von Armaturen & WCs'],
+    title: 'Notdienst & Sanierung',
+    items: ['Rohr- & Kanalreinigung', 'Schimmelentfernung', 'Bautrocknung bei Wasserschaden'],
   },
   {
     n: '03',
     icon: <Icon.Drill/>,
     iconClass: 'dark',
-    title: 'Montage',
-    items: ['Möbelaufbau', 'Reparatur von Rolläden', 'Reparatur von Fenstern'],
+    title: 'Einbau & Montage',
+    items: ['Fenster, Türen & Zargen', 'Regale & Möbelaufbau', 'Trockenbau', 'Kabelverlegung (ohne Anschluss)', 'Betonbohren & -schneiden'],
   },
   {
     n: '04',
     icon: <Icon.Roller/>,
     iconClass: 'green',
-    title: 'Renovierung',
-    items: ['Malerarbeiten', 'Vinyl- & Laminatböden', 'Parkett (schwimmend verlegt)'],
+    title: 'Renovierung & Böden',
+    items: ['Malerarbeiten', 'Teppich-, Laminat- & PVC-Böden', 'Fertigparkett (schwimmend)', 'Holz- & Bautenschutz'],
   },
 ];
 
@@ -218,29 +218,29 @@ function Process() {
 // ─── Leistungs-Überblick (Icons) ───
 const svgP = { viewBox: '0 0 24 24', width: 22, height: 22, fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round' };
 const OVERVIEW = [
-  { cat: 'Reinigung', ic: 'accent', label: 'Grundreinigung',
+  { cat: 'Reinigung', ic: 'accent', label: 'Gebäudereinigung',
     icon: <svg {...svgP}><path d="M9 9h5v10a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2z"/><path d="M9 9V6h4M13 6V4h-3"/><path d="M16.5 5.5h3M16.5 8h3M19.5 4l1.5-.4M19.5 9.5l1.5 .4"/></svg> },
   { cat: 'Reinigung', ic: 'accent', label: 'Umzüge',
     icon: <svg {...svgP}><path d="M3 8h18v11H3z"/><path d="M3 8l2-4h14l2 4"/><path d="M12 4v15"/></svg> },
   { cat: 'Reinigung', ic: 'accent', label: 'Entrümpelung',
     icon: <svg {...svgP}><path d="M4 7h16M6 7l1 13h10l1-13M9 7V4h6v3M10 11v6M14 11v6"/></svg> },
-  { cat: 'Notdienst', ic: '', label: 'Abflussreinigung',
+  { cat: 'Notdienst', ic: '', label: 'Rohr- & Kanalreinigung',
     icon: <svg {...svgP}><path d="M12 3c-2 3-4 5-4 7a4 4 0 0 0 8 0c0-2-2-4-4-7z"/><path d="M5 20h14M8 17l-1 3M16 17l1 3"/></svg> },
-  { cat: 'Notdienst', ic: '', label: 'Schimmelbeseitigung',
+  { cat: 'Notdienst', ic: '', label: 'Schimmelentfernung',
     icon: <svg {...svgP}><path d="M12 3l7 3v5c0 4-3 7-7 9-4-2-7-5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg> },
-  { cat: 'Notdienst', ic: '', label: 'Armaturen & WC',
-    icon: <svg {...svgP}><path d="M5 10h4v3a2 2 0 0 1-2 2 2 2 0 0 1-2-2z"/><path d="M9 11h4a3 3 0 0 1 3 3v1M9 9V8a2 2 0 0 1 2-2h2"/><path d="M16 16c1 1 1 2 0 3"/></svg> },
-  { cat: 'Montage', ic: 'dark', label: 'Möbelaufbau',
-    icon: <svg {...svgP}><path d="M14.5 4.5l5 5-2 2-5-5z"/><path d="M12.5 8.5l-8 8-1.5 4 4-1.5 8-8"/></svg> },
-  { cat: 'Montage', ic: 'dark', label: 'Rollläden',
-    icon: <svg {...svgP}><rect x="4" y="4" width="16" height="16" rx="1"/><path d="M4 8.5h16M4 12h16M4 15.5h16"/></svg> },
-  { cat: 'Montage', ic: 'dark', label: 'Fenster',
+  { cat: 'Notdienst', ic: '', label: 'Bautrocknung',
+    icon: <svg {...svgP}><path d="M3 8h12a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 12h16a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 16h9a2 2 0 1 1-2 2"/></svg> },
+  { cat: 'Einbau', ic: 'dark', label: 'Fenster & Türen',
     icon: <svg {...svgP}><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M4 12h16"/></svg> },
+  { cat: 'Einbau', ic: 'dark', label: 'Möbel & Regale',
+    icon: <svg {...svgP}><path d="M14.5 4.5l5 5-2 2-5-5z"/><path d="M12.5 8.5l-8 8-1.5 4 4-1.5 8-8"/></svg> },
+  { cat: 'Einbau', ic: 'dark', label: 'Trockenbau',
+    icon: <svg {...svgP}><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 12h18M9 5v7M15 12v7M6 12V5M18 12V5M6 19v-7M12 19v-7"/></svg> },
   { cat: 'Renovierung', ic: 'green', label: 'Malerarbeiten',
     icon: <svg {...svgP}><rect x="3" y="5" width="14" height="6" rx="1"/><path d="M17 8h3M11 11v2H8v8"/></svg> },
-  { cat: 'Renovierung', ic: 'green', label: 'Vinyl- & Laminatböden',
+  { cat: 'Böden', ic: 'green', label: 'Laminat, Vinyl & PVC',
     icon: <svg {...svgP}><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 9.7h18M3 14.3h18M9 5v4.7M15 9.7v4.6M9 14.3V19"/></svg> },
-  { cat: 'Renovierung', ic: 'green', label: 'Parkett (schwimmend)',
+  { cat: 'Böden', ic: 'green', label: 'Fertigparkett (schwimmend)',
     icon: <svg {...svgP}><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10l6-6M3 16l12-12M9 20l9-9M15 20l4-4"/></svg> },
 ];
 
@@ -383,7 +383,9 @@ function Footer() {
         </div>
         <div className="footer-bottom">
           <span>© 2026 Prime Tasks GmbH</span>
-          <span>Impressum · Datenschutz · AGB</span>
+          <span className="footer-legal">
+            <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
+          </span>
           <span className="footer-credit">
             Designed by <a href="https://amano.agency" target="_blank" rel="noopener">Amano Agency</a>
           </span>

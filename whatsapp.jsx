@@ -5,19 +5,22 @@
 
 const WA_SERVICE_OPTIONS = [
   { value: '', label: 'Worum geht es?' },
-  { value: 'Haus & Reinigung · Grundreinigung',   label: 'Haus & Reinigung · Grundreinigung' },
+  { value: 'Haus & Reinigung · Gebäudereinigung', label: 'Haus & Reinigung · Gebäudereinigung' },
+  { value: 'Haus & Reinigung · Teppichreinigung', label: 'Haus & Reinigung · Teppichreinigung' },
+  { value: 'Haus & Reinigung · Hausmeisterdienst',label: 'Haus & Reinigung · Hausmeisterdienst' },
   { value: 'Haus & Reinigung · Umzug',            label: 'Haus & Reinigung · Umzug' },
   { value: 'Haus & Reinigung · Entrümpelung',     label: 'Haus & Reinigung · Entrümpelung' },
-  { value: 'Notdienst · Abflussreinigung',        label: 'Notdienst · Abflussreinigung' },
-  { value: 'Notdienst · Schimmelbeseitigung',     label: 'Notdienst · Schimmelbeseitigung' },
-  { value: 'Notdienst · Armatur / WC',            label: 'Notdienst · Armatur / WC' },
-  { value: 'Montage · Möbelaufbau',               label: 'Montage · Möbelaufbau' },
-  { value: 'Montage · Rollläden',                 label: 'Montage · Rollläden' },
-  { value: 'Montage · Fenster',                   label: 'Montage · Fenster' },
+  { value: 'Notdienst · Rohr- & Kanalreinigung',  label: 'Notdienst · Rohr- & Kanalreinigung' },
+  { value: 'Notdienst · Schimmelentfernung',      label: 'Notdienst · Schimmelentfernung' },
+  { value: 'Notdienst · Bautrocknung',            label: 'Notdienst · Bautrocknung' },
+  { value: 'Einbau · Fenster / Türen',            label: 'Einbau · Fenster / Türen' },
+  { value: 'Einbau · Möbel & Regale',             label: 'Einbau · Möbel & Regale' },
+  { value: 'Einbau · Trockenbau',                 label: 'Einbau · Trockenbau' },
+  { value: 'Einbau · Kabelverlegung',             label: 'Einbau · Kabelverlegung' },
   { value: 'Renovierung · Malerarbeiten',         label: 'Renovierung · Malerarbeiten' },
-  { value: 'Renovierung · Vinylboden',            label: 'Renovierung · Vinylboden' },
-  { value: 'Renovierung · Laminat',               label: 'Renovierung · Laminat' },
-  { value: 'Renovierung · Parkett (schwimmend)',  label: 'Renovierung · Parkett (schwimmend)' },
+  { value: 'Böden · Laminat / Vinyl / PVC',       label: 'Böden · Laminat / Vinyl / PVC' },
+  { value: 'Böden · Fertigparkett (schwimmend)',  label: 'Böden · Fertigparkett (schwimmend)' },
+  { value: 'Böden · Holz- & Bautenschutz',        label: 'Böden · Holz- & Bautenschutz' },
   { value: 'Beratung / Sonstiges',                label: 'Beratung / Sonstiges' },
 ];
 
@@ -35,19 +38,19 @@ function WhatsAppChatWidget() {
         const p = JSON.parse(raw);
         // The calculator stored a form-style service id — map back to a label.
         const calcServiceLabels = {
-          'reinigung-grund':    'Haus & Reinigung · Grundreinigung',
+          'reinigung-grund':    'Haus & Reinigung · Gebäudereinigung',
+          'reinigung-teppich':  'Haus & Reinigung · Teppichreinigung',
           'reinigung-umzug':    'Haus & Reinigung · Umzug',
           'reinigung-entrueml': 'Haus & Reinigung · Entrümpelung',
-          'notdienst-abfluss':  'Notdienst · Abflussreinigung',
-          'notdienst-schimmel': 'Notdienst · Schimmelbeseitigung',
-          'notdienst-armatur':  'Notdienst · Armatur / WC',
-          'montage-moebel':     'Montage · Möbelaufbau',
-          'montage-rolladen':   'Montage · Rollläden',
-          'montage-fenster':    'Montage · Fenster',
+          'notdienst-abfluss':  'Notdienst · Rohr- & Kanalreinigung',
+          'notdienst-schimmel': 'Notdienst · Schimmelentfernung',
+          'notdienst-trocknung':'Notdienst · Bautrocknung',
+          'montage-moebel':     'Einbau · Möbel & Regale',
+          'montage-fenster':    'Einbau · Fenster / Türen',
+          'montage-trockenbau': 'Einbau · Trockenbau',
           'renov-maler':        'Renovierung · Malerarbeiten',
-          'renov-vinyl':        'Renovierung · Vinylboden',
-          'renov-laminat':      'Renovierung · Laminat',
-          'renov-parkett':      'Renovierung · Parkett (schwimmend)',
+          'renov-boden':        'Böden · Laminat / Vinyl / PVC',
+          'renov-parkett':      'Böden · Fertigparkett (schwimmend)',
         };
         if (p.service && calcServiceLabels[p.service]) setService(calcServiceLabels[p.service]);
         if (p.message) setMessage(p.message);
