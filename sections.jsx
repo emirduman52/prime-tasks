@@ -284,7 +284,7 @@ function Values() {
         <div className="values">
           <div className="value">
             <div className="k">Schnell</div>
-            <p>Notdienst-Reaktion innerhalb von 24 Stunden. Akute Wasserschäden? Meist in unter 2 Stunden vor Ort im Münchner Stadtgebiet.</p>
+            <p>Antwort auf Anfragen meist innerhalb von 4 Stunden. Bei Notdienst und akuten Fällen sind wir in der Regel innerhalb von 24 Stunden vor Ort im Münchner Stadtgebiet.</p>
           </div>
           <div className="value">
             <div className="k">Sicher</div>

@@ -39,21 +39,16 @@ const ACCENTS = {
   green:  { name: 'Grün',   value: '#1f8a5b' },
 };
 
+// Alle angebotenen Schriften sind lokal selbst gehostet (siehe @font-face in styles.css)
+const LOCAL_FONTS = ['Space Grotesk', 'Manrope', 'JetBrains Mono'];
 const HEADING_FONTS = [
   'Space Grotesk',
   'Manrope',
-  'Bricolage Grotesque',
-  'DM Serif Display',
 ];
 
-// Inject any heading font on demand (lightweight)
+// Schriften sind lokal eingebunden — kein externer Google-Fonts-Request.
 function ensureFont(name) {
-  const id = 'gf-' + name.replace(/\W+/g,'-');
-  if (document.getElementById(id)) return;
-  const l = document.createElement('link');
-  l.id = id; l.rel = 'stylesheet';
-  l.href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@400;500;600;700&display=swap`;
-  document.head.appendChild(l);
+  if (LOCAL_FONTS.includes(name)) return;
 }
 
 function App() {
