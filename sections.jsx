@@ -369,7 +369,6 @@ function Footer() {
               <li><a href="#ablauf">Ablauf</a></li>
               <li><a href="#referenzen">Überblick</a></li>
               <li><a href="#kontakt">Kontakt</a></li>
-              <li><a href="impressum.html">Impressum</a></li>
             </ul>
           </div>
           <div>
