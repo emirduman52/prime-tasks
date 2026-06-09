@@ -1,58 +1,27 @@
 // ─── Prime Tasks — WhatsApp Widget ────────────────────────────────────────
 // Replaces the form. People drop in service + description + (optional) name,
-// hit "Auf WhatsApp öffnen" and continue the conversation in the app —
+// hit the WhatsApp button and continue the conversation in the app —
 // where they can attach photos, voice notes etc. natively.
 
-const WA_SERVICE_OPTIONS = [
-  { value: '', label: 'Worum geht es?' },
-  { value: 'Haus & Reinigung · Gebäudereinigung', label: 'Haus & Reinigung · Gebäudereinigung' },
-  { value: 'Haus & Reinigung · Teppichreinigung', label: 'Haus & Reinigung · Teppichreinigung' },
-  { value: 'Haus & Reinigung · Hausmeisterdienst',label: 'Haus & Reinigung · Hausmeisterdienst' },
-  { value: 'Haus & Reinigung · Umzug',            label: 'Haus & Reinigung · Umzug' },
-  { value: 'Haus & Reinigung · Entrümpelung',     label: 'Haus & Reinigung · Entrümpelung' },
-  { value: 'Notdienst · Rohr- & Kanalreinigung',  label: 'Notdienst · Rohr- & Kanalreinigung' },
-  { value: 'Notdienst · Schimmelentfernung',      label: 'Notdienst · Schimmelentfernung' },
-  { value: 'Notdienst · Bautrocknung',            label: 'Notdienst · Bautrocknung' },
-  { value: 'Einbau · Fenster / Türen',            label: 'Einbau · Fenster / Türen' },
-  { value: 'Einbau · Möbel & Regale',             label: 'Einbau · Möbel & Regale' },
-  { value: 'Einbau · Trockenbau',                 label: 'Einbau · Trockenbau' },
-  { value: 'Einbau · Kabelverlegung',             label: 'Einbau · Kabelverlegung' },
-  { value: 'Renovierung · Malerarbeiten',         label: 'Renovierung · Malerarbeiten' },
-  { value: 'Böden · Laminat / Vinyl / PVC',       label: 'Böden · Laminat / Vinyl / PVC' },
-  { value: 'Böden · Fertigparkett (schwimmend)',  label: 'Böden · Fertigparkett (schwimmend)' },
-  { value: 'Böden · Holz- & Bautenschutz',        label: 'Böden · Holz- & Bautenschutz' },
-  { value: 'Beratung / Sonstiges',                label: 'Beratung / Sonstiges' },
-];
-
 function WhatsAppChatWidget() {
+  const { c, lang } = useI18n();
   const [service, setService] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
 
-  // Listen for prefill from calculator
+  const serviceOptions = [
+    { value: '', label: c.wa.servicePlaceholder },
+    ...c.wa.options.map((o) => ({ value: o, label: o })),
+  ];
+
+  // Listen for prefill from calculator (service id + message)
   useEffect(() => {
     const applyPrefill = () => {
       try {
         const raw = sessionStorage.getItem('pt-prefill');
         if (!raw) return;
         const p = JSON.parse(raw);
-        // The calculator stored a form-style service id — map back to a label.
-        const calcServiceLabels = {
-          'reinigung-grund':    'Haus & Reinigung · Gebäudereinigung',
-          'reinigung-teppich':  'Haus & Reinigung · Teppichreinigung',
-          'reinigung-umzug':    'Haus & Reinigung · Umzug',
-          'reinigung-entrueml': 'Haus & Reinigung · Entrümpelung',
-          'notdienst-abfluss':  'Notdienst · Rohr- & Kanalreinigung',
-          'notdienst-schimmel': 'Notdienst · Schimmelentfernung',
-          'notdienst-trocknung':'Notdienst · Bautrocknung',
-          'montage-moebel':     'Einbau · Möbel & Regale',
-          'montage-fenster':    'Einbau · Fenster / Türen',
-          'montage-trockenbau': 'Einbau · Trockenbau',
-          'renov-maler':        'Renovierung · Malerarbeiten',
-          'renov-boden':        'Böden · Laminat / Vinyl / PVC',
-          'renov-parkett':      'Böden · Fertigparkett (schwimmend)',
-        };
-        if (p.service && calcServiceLabels[p.service]) setService(calcServiceLabels[p.service]);
+        if (p.service) setService(p.service);
         if (p.message) setMessage(p.message);
         sessionStorage.removeItem('pt-prefill');
       } catch (e) {}
@@ -63,34 +32,31 @@ function WhatsAppChatWidget() {
   }, []);
 
   // Compose the actual WhatsApp message
+  const wishMsg = c.wa.wishDefault.replace(/^…\s*/, '');
   const lines = [];
-  if (name.trim()) lines.push(`Hallo, hier ist ${name.trim()}.`);
-  else lines.push('Hallo Prime Tasks,');
-  if (service) lines.push(`\nLeistung: ${service}`);
+  if (name.trim()) lines.push(c.wa.greetHello(name.trim()));
+  else lines.push(c.wa.greetDefault);
+  if (service) lines.push(`\n${c.wa.leistungPrefix} ${service}`);
   if (message.trim()) lines.push(`\n${message.trim()}`);
-  if (!service && !message.trim()) lines.push('\nich hätte gern ein Angebot.');
+  if (!service && !message.trim()) lines.push(`\n${wishMsg}`);
   const composed = lines.join('\n').trim();
 
   const wa = `https://wa.me/4915129778866?text=${encodeURIComponent(composed)}`;
 
   // ── time hint (just "today" relative)
   const now = new Date();
-  const time = now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const time = now.toLocaleTimeString(lang === 'de' ? 'de-DE' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <section id="kontakt" data-screen-label="WhatsApp Kontakt">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Direkt schreiben</span>
-            <h2>Antwort in unter 4&nbsp;Stunden —<br/>direkt per WhatsApp.</h2>
+            <span className="eyebrow">{c.wa.eyebrow}</span>
+            <h2>{c.wa.h2a}<br/>{c.wa.h2b}</h2>
           </div>
           <div className="lead">
-            <p>
-              Wählen Sie Ihre Leistung, schicken Sie ein paar Sätze und am liebsten ein
-              Foto direkt im Chat. Wir antworten werktags innerhalb von vier Stunden mit
-              Festpreis und Termin.
-            </p>
+            <p>{c.wa.lead}</p>
           </div>
         </div>
 
@@ -103,38 +69,38 @@ function WhatsAppChatWidget() {
                 <span className="wa-online" aria-label="online"></span>
               </div>
               <div>
-                <strong>Prime Tasks GmbH</strong>
-                <span>Antwortet meist innerhalb von 4 Stunden</span>
+                <strong>{c.wa.composeName}</strong>
+                <span>{c.wa.composeStatus}</span>
               </div>
             </div>
 
             <div className="wa-fields">
               <div className="wa-field">
-                <label htmlFor="wa-service">Leistung</label>
+                <label htmlFor="wa-service">{c.wa.serviceLabel}</label>
                 <select id="wa-service" value={service} onChange={(e) => setService(e.target.value)}>
-                  {WA_SERVICE_OPTIONS.map((o) => (
+                  {serviceOptions.map((o) => (
                     <option key={o.value} value={o.value}>{o.label}</option>
                   ))}
                 </select>
               </div>
               <div className="wa-field">
-                <label htmlFor="wa-name">Ihr Name <em>(optional)</em></label>
+                <label htmlFor="wa-name">{c.wa.nameLabel} <em>{c.wa.nameOptional}</em></label>
                 <input
                   id="wa-name"
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="z. B. Anna Berger"
+                  placeholder={c.wa.namePlaceholder}
                 />
               </div>
               <div className="wa-field">
-                <label htmlFor="wa-msg">Kurze Beschreibung</label>
+                <label htmlFor="wa-msg">{c.wa.msgLabel}</label>
                 <textarea
                   id="wa-msg"
                   rows="4"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Was sollen wir machen? Größe, Zeitfenster, Adresse, Besonderheiten…"
+                  placeholder={c.wa.msgPlaceholder}
                 />
               </div>
             </div>
@@ -145,21 +111,21 @@ function WhatsAppChatWidget() {
                 <circle cx="9" cy="11" r="2"/>
                 <path d="M21 17l-5-5-9 8" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <span>Fotos hängen Sie nach dem Öffnen direkt im Chat an — schneller als jedes Formular.</span>
+              <span>{c.wa.photoHint}</span>
             </div>
 
             <a href={wa} target="_blank" rel="noopener" className="btn btn-whats wa-cta">
-              <Icon.WhatsApp/> Auf WhatsApp öffnen
+              <Icon.WhatsApp/> {c.wa.cta}
             </a>
 
             <div className="wa-fallback">
-              Kein WhatsApp? <a href="tel:+4915129778866">+49 1512 9778866 anrufen</a>
-              · <a href="mailto:info@primetasks.de">E-Mail schreiben</a>
+              {c.wa.fallbackPre} <a href="tel:+4915129778866">{c.wa.callLink}</a>
+              · <a href="mailto:info@primetasks.de">{c.wa.emailLink}</a>
             </div>
           </div>
 
           {/* RIGHT — live chat preview */}
-          <aside className="wa-preview" aria-label="Chat-Vorschau">
+          <aside className="wa-preview" aria-label="Chat">
             <header className="wa-preview-head">
               <button className="wa-back" aria-hidden="true">‹</button>
               <div className="wa-avatar small">
@@ -167,7 +133,7 @@ function WhatsAppChatWidget() {
               </div>
               <div className="wa-head-meta">
                 <strong>Prime Tasks GmbH</strong>
-                <span>online</span>
+                <span>{c.wa.previewOnline}</span>
               </div>
               <div className="wa-icons">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17 10.5V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2v-3.5l4 4v-11z"/></svg>
@@ -179,18 +145,18 @@ function WhatsAppChatWidget() {
             <div className="wa-preview-body">
               {/* Pre-canned incoming bubble */}
               <div className="wa-bubble wa-in">
-                <p>Hallo &amp; willkommen bei Prime Tasks! 👋</p>
-                <p>Schicken Sie uns Ihre Anfrage — am besten mit ein paar Fotos. Wir melden uns mit Festpreis und Termin zurück.</p>
+                <p>{c.wa.bubbleIn1}</p>
+                <p>{c.wa.bubbleIn2}</p>
                 <span className="wa-time">{time}</span>
               </div>
 
               {/* Outgoing bubble — live updates */}
               <div className="wa-bubble wa-out">
-                {name.trim() ? <p>Hallo, hier ist {name.trim()}.</p> : <p>Hallo Prime Tasks,</p>}
-                {service && <p style={{marginTop:6}}><strong>Leistung:</strong> {service}</p>}
+                {name.trim() ? <p>{c.wa.greetHello(name.trim())}</p> : <p>{c.wa.greetDefault}</p>}
+                {service && <p style={{marginTop:6}}><strong>{c.wa.leistungPrefix}</strong> {service}</p>}
                 {message.trim()
                   ? <p style={{marginTop:6, whiteSpace:'pre-wrap'}}>{message.trim()}</p>
-                  : (!service && <p style={{marginTop:6, opacity:.6, fontStyle:'italic'}}>… ich hätte gern ein Angebot.</p>)
+                  : (!service && <p style={{marginTop:6, opacity:.6, fontStyle:'italic'}}>{c.wa.wishDefault}</p>)
                 }
                 <span className="wa-time">
                   {time}
@@ -202,7 +168,7 @@ function WhatsAppChatWidget() {
             </div>
 
             <footer className="wa-preview-foot">
-              <span className="wa-mock-input">📎  Tippen Sie auf "Auf WhatsApp öffnen" …</span>
+              <span className="wa-mock-input">📎  {c.wa.mockInput}</span>
               <button className="wa-mic" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3M19 11a1 1 0 0 0-2 0 5 5 0 0 1-10 0 1 1 0 0 0-2 0 7 7 0 0 0 6 6.92V20H9a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2h-2v-2.08A7 7 0 0 0 19 11"/></svg>
               </button>

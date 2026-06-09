@@ -123,12 +123,9 @@ const PRICING = {
 };
 
 const URGENCIES = [
-  { id: 'normal', label: 'Regulär', sub: 'Innerhalb 1 Woche', mult: 1.0 },
-  { id: 'express', label: 'Express', sub: '24h–48h', mult: 1.2 },
+  { id: 'normal', mult: 1.0 },
+  { id: 'express', mult: 1.2 },
 ];
-
-const fmt = (n) => new Intl.NumberFormat('de-DE', { maximumFractionDigits: 0 }).format(Math.round(n));
-const eur = (n) => `${fmt(n)} €`;
 
 function calcLine(task, qty) {
   if (!task.input) {
@@ -158,12 +155,23 @@ function Calculator() {
   const [extras, setExtras] = useState({ wochenende: false, etage: false });
   const [submitted, setSubmitted] = useState(false);
 
+  const { c, lang } = useI18n();
+  const cc = c.calc;
+  const nf = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-GB', { maximumFractionDigits: 0 });
+  const fmt = (n) => nf.format(Math.round(n));
+  const eur = (n) => `${fmt(n)} €`;
+
   const cat = PRICING[catId];
   // Guard against stale taskId from a previous category — the useEffect that
   // resets taskId runs AFTER render, so we resolve a safe key inline.
   const safeTaskId = cat.tasks[taskId] ? taskId : Object.keys(cat.tasks)[0];
   const task = cat.tasks[safeTaskId];
-  const urg = URGENCIES.find(u => u.id === urgency);
+  const urgIdx = URGENCIES.findIndex(u => u.id === urgency);
+  const urg = URGENCIES[urgIdx];
+  // translated labels for current category/task/urgency
+  const catT = cc.cats[catId];
+  const taskT = catT.tasks[safeTaskId];
+  const urgT = cc.urgencies[urgIdx];
 
   // when category changes, reset task to first one (keeps state in sync)
   useEffect(() => {
@@ -183,15 +191,16 @@ function Calculator() {
   const totalMin = line.min * urgencyMult + extrasFlat;
   const totalMax = line.max * urgencyMult + extrasFlat;
 
+  const w = cc.wa;
   const whatsAppText = encodeURIComponent(
-    `Hallo Prime Tasks, ich hätte gern ein Angebot:\n\n` +
-    `Leistung: ${cat.label} — ${task.label}\n` +
-    (task.input ? `${task.input.label}: ${qty} ${task.unit}\n` : `Umfang: ${task.unit}\n`) +
-    `Dringlichkeit: ${urg.label} (${urg.sub})\n` +
-    (extras.wochenende ? `Zeitfenster: Wochenende/Abend\n` : '') +
-    (extras.etage ? `Zugang: höhere Etage ohne Aufzug\n` : '') +
-    `\nUngefährer Richtwert vom Rechner: ${eur(totalMin)} – ${eur(totalMax)}\n` +
-    `\nBitte um Rückmeldung mit Festpreis und Termin. Danke!`
+    `${w.greeting}\n\n` +
+    `${w.leistung}: ${catT.label} — ${taskT.label}\n` +
+    (task.input ? `${taskT.inputLabel}: ${qty} ${taskT.unit}\n` : `${w.umfang}: ${taskT.unit}\n`) +
+    `${w.dringlichkeit}: ${urgT.label} (${urgT.sub})\n` +
+    (extras.wochenende ? `${w.zeitfenster}\n` : '') +
+    (extras.etage ? `${w.zugang}\n` : '') +
+    `\n${w.richtwert}: ${eur(totalMin)} – ${eur(totalMax)}\n` +
+    `\n${w.schluss}`
   );
 
   const taskList = Object.entries(cat.tasks);
@@ -201,14 +210,11 @@ function Calculator() {
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Was kostet's?</span>
-            <h2>Sofort-Richtwert.<br/>Ohne Anmeldung.</h2>
+            <span className="eyebrow">{cc.eyebrow}</span>
+            <h2>{cc.h2a}<br/>{cc.h2b}</h2>
           </div>
           <div className="lead">
-            <p>
-              Wählen Sie Leistung und Umfang — Sie bekommen sofort einen ungefähren
-              Preisrahmen. Der Festpreis kommt nach kurzer Foto-Anfrage per WhatsApp.
-            </p>
+            <p>{cc.lead}</p>
           </div>
         </div>
 
@@ -217,7 +223,7 @@ function Calculator() {
           <div className="calc-form">
             {/* Category tabs */}
             <div className="calc-tabs" role="tablist">
-              {Object.entries(PRICING).map(([k, c]) => (
+              {Object.entries(PRICING).map(([k, cdef]) => (
                 <button
                   key={k}
                   role="tab"
@@ -225,23 +231,23 @@ function Calculator() {
                   className={`calc-tab ${catId === k ? 'active' : ''}`}
                   onClick={() => setCatId(k)}
                 >
-                  <span className="calc-tab-icon"><CalcIcon kind={c.icon}/></span>
-                  <span className="calc-tab-label">{c.label}</span>
+                  <span className="calc-tab-icon"><CalcIcon kind={cdef.icon}/></span>
+                  <span className="calc-tab-label">{cc.cats[k].label}</span>
                 </button>
               ))}
             </div>
 
             {/* Task picker */}
             <div className="calc-field">
-              <label className="calc-label">Konkrete Leistung</label>
+              <label className="calc-label">{cc.taskLabel}</label>
               <div className="calc-segmented">
-                {taskList.map(([k, t]) => (
+                {taskList.map(([k]) => (
                   <button
                     key={k}
                     className={`calc-seg ${safeTaskId === k ? 'active' : ''}`}
                     onClick={() => setTaskId(k)}
                   >
-                    {t.label}
+                    {catT.tasks[k].label}
                   </button>
                 ))}
               </div>
@@ -251,9 +257,9 @@ function Calculator() {
             {task.input && (
               <div className="calc-field">
                 <div className="calc-label-row">
-                  <label className="calc-label">{task.input.label}</label>
+                  <label className="calc-label">{taskT.inputLabel}</label>
                   <span className="calc-qty-display">
-                    <strong>{qty}</strong> {task.unit}
+                    <strong>{qty}</strong> {taskT.unit}
                   </span>
                 </div>
                 <input
@@ -266,35 +272,32 @@ function Calculator() {
                   onChange={(e) => setQty(Number(e.target.value))}
                 />
                 <div className="calc-range-meta">
-                  <span>{task.input.min} {task.unit}</span>
-                  <span>{task.input.max} {task.unit}</span>
+                  <span>{task.input.min} {taskT.unit}</span>
+                  <span>{task.input.max} {taskT.unit}</span>
                 </div>
               </div>
             )}
 
             {!task.input && (
               <div className="calc-field calc-flat">
-                <label className="calc-label">Pauschale</label>
-                <p className="calc-hint">
-                  Diese Leistung wird zum Festbetrag abgerechnet — Materialkosten
-                  bei Bedarf zusätzlich.
-                </p>
+                <label className="calc-label">{cc.flatLabel}</label>
+                <p className="calc-hint">{cc.flatHint}</p>
               </div>
             )}
 
             {/* Urgency */}
             <div className="calc-field">
-              <label className="calc-label">Dringlichkeit</label>
+              <label className="calc-label">{cc.urgencyLabel}</label>
               <div className="calc-urgency">
-                {URGENCIES.map((u) => (
+                {URGENCIES.map((u, i) => (
                   <button
                     key={u.id}
                     className={`calc-urg ${urgency === u.id ? 'active' : ''}`}
                     onClick={() => setUrgency(u.id)}
                   >
-                    <strong>{u.label}</strong>
-                    <span>{u.sub}</span>
-                    <em>{u.mult === 1 ? 'inkl.' : `+${Math.round((u.mult-1)*100)}%`}</em>
+                    <strong>{cc.urgencies[i].label}</strong>
+                    <span>{cc.urgencies[i].sub}</span>
+                    <em>{u.mult === 1 ? cc.inkl : `+${Math.round((u.mult-1)*100)}%`}</em>
                   </button>
                 ))}
               </div>
@@ -302,7 +305,7 @@ function Calculator() {
 
             {/* Extras */}
             <div className="calc-field">
-              <label className="calc-label">Zusatz</label>
+              <label className="calc-label">{cc.extrasLabel}</label>
               <div className="calc-extras">
                 <label className={`calc-check ${extras.wochenende ? 'active' : ''}`}>
                   <input
@@ -310,7 +313,7 @@ function Calculator() {
                     checked={extras.wochenende}
                     onChange={(e) => setExtras({...extras, wochenende: e.target.checked})}
                   />
-                  <span>Wochenend- / Abendtermin</span>
+                  <span>{cc.extraWeekend}</span>
                   <em>+60 €</em>
                 </label>
                 <label className={`calc-check ${extras.etage ? 'active' : ''}`}>
@@ -319,7 +322,7 @@ function Calculator() {
                     checked={extras.etage}
                     onChange={(e) => setExtras({...extras, etage: e.target.checked})}
                   />
-                  <span>4. Etage+ ohne Aufzug</span>
+                  <span>{cc.extraFloor}</span>
                   <em>+40 €</em>
                 </label>
               </div>
@@ -329,9 +332,9 @@ function Calculator() {
           {/* RIGHT: summary */}
           <aside className="calc-summary">
             <div className="calc-sum-head">
-              <span className="eyebrow">Ihr Richtwert</span>
+              <span className="eyebrow">{cc.summaryEyebrow}</span>
               <h3 style={{fontSize:'15px', marginTop:8, fontWeight:500, color:'rgba(255,255,255,.7)'}}>
-                {cat.label} · {task.label}
+                {catT.label} · {taskT.label}
               </h3>
             </div>
 
@@ -342,32 +345,32 @@ function Calculator() {
                 <span className="calc-price-num">{fmt(totalMax)}</span>
                 <span className="calc-price-cur">€</span>
               </div>
-              <span className="calc-price-sub">inkl. MwSt. · ungefährer Richtwert</span>
+              <span className="calc-price-sub">{cc.priceSub}</span>
             </div>
 
             <div className="calc-breakdown">
               <div className="calc-bd-row">
                 <span>
-                  {task.label}
-                  {task.input && <em> · {qty} {task.unit}</em>}
+                  {taskT.label}
+                  {task.input && <em> · {qty} {taskT.unit}</em>}
                 </span>
                 <span>{eur(line.min)} – {eur(line.max)}</span>
               </div>
               {urgencyMult !== 1 && (
                 <div className="calc-bd-row">
-                  <span>{urg.label} ({urg.sub})</span>
+                  <span>{urgT.label} ({urgT.sub})</span>
                   <span>×{urgencyMult.toFixed(2)}</span>
                 </div>
               )}
               {extras.wochenende && (
                 <div className="calc-bd-row">
-                  <span>Wochenend-Aufschlag</span>
+                  <span>{cc.weekendSurcharge}</span>
                   <span>+60 €</span>
                 </div>
               )}
               {extras.etage && (
                 <div className="calc-bd-row">
-                  <span>Etage-Aufschlag</span>
+                  <span>{cc.floorSurcharge}</span>
                   <span>+40 €</span>
                 </div>
               )}
@@ -382,21 +385,19 @@ function Calculator() {
                 style={{width:'100%', justifyContent:'center'}}
                 onClick={() => setSubmitted(true)}
               >
-                <Icon.WhatsApp/> Per WhatsApp anfragen
+                <Icon.WhatsApp/> {cc.ctaWhats}
               </a>
               <a
                 href="tel:+4915129778866"
                 className="btn"
                 style={{width:'100%', justifyContent:'center', background:'rgba(255,255,255,.08)', color:'#fff', border:'1px solid rgba(255,255,255,.18)'}}
               >
-                <Icon.Phone/> Lieber anrufen
+                <Icon.Phone/> {cc.ctaCall}
               </a>
             </div>
 
             <p className="calc-disclaimer">
-              <Icon.Check/> Ungefährer Richtwert auf Basis typischer Aufträge. Materialkosten,
-              Anfahrten außerhalb München und Sonderfälle werden separat ausgewiesen. Verbindlicher
-              Festpreis nach Foto-Anfrage.
+              <Icon.Check/> {cc.disclaimer}
             </p>
           </aside>
         </div>

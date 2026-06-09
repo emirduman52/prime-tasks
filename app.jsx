@@ -54,6 +54,16 @@ function ensureFont(name) {
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
+  // Sprache (DE/EN) — Standard Deutsch, im Browser gespeichert
+  const [lang, setLangState] = useState(() => {
+    try { return localStorage.getItem('pt-lang') || 'de'; } catch (e) { return 'de'; }
+  });
+  const setLang = (l) => {
+    setLangState(l);
+    try { localStorage.setItem('pt-lang', l); } catch (e) {}
+  };
+  useEffect(() => { document.documentElement.lang = lang; }, [lang]);
+
   // Apply theme variables to <html>
   useEffect(() => {
     const root = document.documentElement;
@@ -73,7 +83,7 @@ function App() {
   }, [t.theme, t.accent, t.headingFont]);
 
   return (
-    <>
+    <LangContext.Provider value={{ lang, c: STR[lang] || STR.de, setLang }}>
       <Nav />
       <Hero heroVariant={t.heroVariant} />
       <Services />
@@ -118,7 +128,7 @@ function App() {
           onChange={(v) => setTweak('showFab', v)}
         />
       </TweaksPanel>
-    </>
+    </LangContext.Provider>
   );
 }
 

@@ -38,20 +38,25 @@ function Nav() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  const { c, lang, setLang } = useI18n();
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`} data-screen-label="Navigation">
       <div className="container nav-inner">
         <BrandMark logoStyle="monogram" />
         <ul className="nav-links">
-          <li><a href="#leistungen">Leistungen</a></li>
-          <li><a href="#kostenrechner">Kostenrechner</a></li>
-          <li><a href="#ablauf">Ablauf</a></li>
-          <li><a href="#referenzen">Überblick</a></li>
-          <li><a href="#kontakt">Kontakt</a></li>
+          <li><a href="#leistungen">{c.nav.leistungen}</a></li>
+          <li><a href="#kostenrechner">{c.nav.kostenrechner}</a></li>
+          <li><a href="#ablauf">{c.nav.ablauf}</a></li>
+          <li><a href="#referenzen">{c.nav.ueberblick}</a></li>
+          <li><a href="#kontakt">{c.nav.kontakt}</a></li>
         </ul>
         <div className="nav-cta">
+          <div className="lang-switch" role="group" aria-label="Sprache / Language">
+            <button className={lang === 'de' ? 'active' : ''} aria-pressed={lang === 'de'} onClick={() => setLang('de')}>DE</button>
+            <button className={lang === 'en' ? 'active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
+          </div>
           <a href="tel:+4915129778866" className="btn btn-ghost"><Icon.Phone/> +49 1512 9778866</a>
-          <a href="#kontakt" className="btn btn-accent">Angebot anfragen</a>
+          <a href="#kontakt" className="btn btn-accent">{c.nav.cta}</a>
         </div>
       </div>
     </nav>
@@ -60,37 +65,34 @@ function Nav() {
 
 // ─── Hero ───
 function Hero({ heroVariant }) {
+  const { c } = useI18n();
   return (
     <header className="hero" data-screen-label="Hero">
       <div className="container hero-grid">
         <div className="hero-copy">
-          <span className="eyebrow">Handwerk &amp; Service für Privathaushalte · Region München</span>
+          <span className="eyebrow">{c.hero.eyebrow}</span>
           <h1 style={{marginTop: 18}}>
-            Alles aus <span style={{color:'var(--accent)'}}>einer Hand.</span><br/>
-            Fachgerecht &amp; termintreu.
+            {c.hero.h1a}<span style={{color:'var(--accent)'}}>{c.hero.h1accent}</span><br/>
+            {c.hero.h1b}
           </h1>
-          <p className="hero-lead">
-            Prime Tasks ist Ihr flexibler Rundum&#8209;Service für Privathaushalte —
-            von der Grundreinigung bis zur kompletten Renovierung. Ein Anruf, ein Team,
-            ein fester Termin.
-          </p>
+          <p className="hero-lead">{c.hero.lead}</p>
           <div className="hero-ctas">
             <a href={WA_LINK} target="_blank" rel="noopener" className="btn btn-whats">
-              <Icon.WhatsApp/> Per WhatsApp anfragen
+              <Icon.WhatsApp/> {c.hero.ctaWhats}
             </a>
             <a href="#kostenrechner" className="btn btn-ghost">
-              Kosten berechnen <Icon.Arrow/>
+              {c.hero.ctaCalc} <Icon.Arrow/>
             </a>
           </div>
           <div className="hero-pills">
-            <span className="pill"><span className="dot"/>Schnell vor Ort</span>
-            <span className="pill"><span className="dot b"/>Sicher &amp; versichert</span>
-            <span className="pill"><span className="dot g"/>Zuverlässig &amp; termintreu</span>
+            <span className="pill"><span className="dot"/>{c.hero.pills[0]}</span>
+            <span className="pill"><span className="dot b"/>{c.hero.pills[1]}</span>
+            <span className="pill"><span className="dot g"/>{c.hero.pills[2]}</span>
           </div>
           <div className="hero-meta">
-            <div className="stat"><div className="num">24h</div><div className="lbl">Notdienst-Reaktion</div></div>
-            <div className="stat"><div className="num">4+</div><div className="lbl">Leistungs&shy;bereiche</div></div>
-            <div className="stat"><div className="num">100%</div><div className="lbl">Festpreis-Garantie</div></div>
+            {c.hero.stats.map((s, i) => (
+              <div key={i} className="stat"><div className="num">{s.num}</div><div className="lbl">{s.lbl}</div></div>
+            ))}
           </div>
         </div>
 
@@ -98,7 +100,7 @@ function Hero({ heroVariant }) {
           <img
             className="hero-img"
             src="uploads/photos/hero.jpg"
-            alt="Handwerker von Prime Tasks bei der Arbeit"
+            alt={c.hero.imgAlt}
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
           <div className="placeholder">
@@ -109,7 +111,7 @@ function Hero({ heroVariant }) {
             <div className="center">Team bei der Arbeit<br/><span style={{fontSize:11,letterSpacing:'.1em',opacity:.7}}>(echtes Foto einsetzen)</span></div>
             <div className="top" style={{justifyContent:'flex-end'}}><span>3000×3750</span></div>
           </div>
-          <div className="hero-callout">Jetzt verfügbar</div>
+          <div className="hero-callout">{c.hero.callout}</div>
         </div>
       </div>
     </header>
@@ -117,64 +119,38 @@ function Hero({ heroVariant }) {
 }
 
 // ─── Services ───
-const SERVICES = [
-  {
-    n: '01',
-    icon: <Icon.Sparkle/>,
-    iconClass: 'accent',
-    title: 'Haus & Reinigung',
-    items: ['Gebäude- & Grundreinigung', 'Teppichreinigung', 'Hausmeisterdienste', 'Umzüge & Entrümpelung', 'Müllentsorgung'],
-  },
-  {
-    n: '02',
-    icon: <Icon.Wrench/>,
-    iconClass: '',
-    title: 'Notdienst & Sanierung',
-    items: ['Rohr- & Kanalreinigung', 'Schimmelentfernung', 'Bautrocknung bei Wasserschaden'],
-  },
-  {
-    n: '03',
-    icon: <Icon.Drill/>,
-    iconClass: 'dark',
-    title: 'Einbau & Montage',
-    items: ['Fenster, Türen & Zargen', 'Regale & Möbelaufbau', 'Trockenbau', 'Kabelverlegung (ohne Anschluss)', 'Betonbohren & -schneiden'],
-  },
-  {
-    n: '04',
-    icon: <Icon.Roller/>,
-    iconClass: 'green',
-    title: 'Renovierung & Böden',
-    items: ['Malerarbeiten', 'Teppich-, Laminat- & PVC-Böden', 'Fertigparkett (schwimmend)', 'Holz- & Bautenschutz'],
-  },
+const SERVICE_ICONS = [
+  { icon: <Icon.Sparkle/>, iconClass: 'accent' },
+  { icon: <Icon.Wrench/>,  iconClass: '' },
+  { icon: <Icon.Drill/>,   iconClass: 'dark' },
+  { icon: <Icon.Roller/>,  iconClass: 'green' },
 ];
 
 function Services() {
+  const { c } = useI18n();
   return (
     <section id="leistungen" data-screen-label="Leistungen">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Was wir machen</span>
-            <h2>Vier Bereiche.<br/>Ein verlässlicher Ansprechpartner.</h2>
+            <span className="eyebrow">{c.services.eyebrow}</span>
+            <h2>{c.services.h2a}<br/>{c.services.h2b}</h2>
           </div>
           <div className="lead">
-            <p>
-              Statt für jedes Gewerk einen neuen Handwerker zu suchen, koordinieren wir
-              alles intern. Das spart Zeit, Wege und Missverständnisse.
-            </p>
+            <p>{c.services.lead}</p>
           </div>
         </div>
         <div className="services-grid">
-          {SERVICES.map((s) => (
-            <article key={s.n} className="service">
-              <div className="service-num">{s.n} / 04</div>
-              <div className={`service-icon ${s.iconClass}`}>{s.icon}</div>
+          {c.services.items.map((s, i) => (
+            <article key={i} className="service">
+              <div className="service-num">{String(i + 1).padStart(2, '0')} / 04</div>
+              <div className={`service-icon ${SERVICE_ICONS[i].iconClass}`}>{SERVICE_ICONS[i].icon}</div>
               <h3>{s.title}</h3>
               <ul className="service-list">
-                {s.items.map((it) => <li key={it}>{it}</li>)}
+                {s.list.map((it) => <li key={it}>{it}</li>)}
               </ul>
               <a href="#kontakt" className="service-cta">
-                Anfragen <span className="arr"><Icon.Arrow/></span>
+                {c.services.cta} <span className="arr"><Icon.Arrow/></span>
               </a>
             </article>
           ))}
@@ -186,29 +162,22 @@ function Services() {
 
 // ─── Process ───
 function Process() {
+  const { c } = useI18n();
   return (
     <section id="ablauf" data-screen-label="Ablauf" style={{padding: 0, paddingBottom: 'clamp(60px, 9vw, 120px)'}}>
       <div className="process">
-        <span className="eyebrow">So arbeiten wir</span>
+        <span className="eyebrow">{c.process.eyebrow}</span>
         <h2 style={{marginTop: 16, maxWidth: '18ch'}}>
-          Drei Schritte. Kein Papierkrieg.
+          {c.process.h2}
         </h2>
         <div className="process-steps">
-          <div className="step">
-            <span className="num">01 · ANFRAGE</span>
-            <h3>Per WhatsApp oder Anruf</h3>
-            <p>Sie schicken uns Fotos und beschreiben kurz das Problem. Antwort meist innerhalb von 4 Stunden — werktags wie am Wochenende.</p>
-          </div>
-          <div className="step">
-            <span className="num">02 · TERMIN</span>
-            <h3>Festpreis &amp; fester Termin</h3>
-            <p>Sie bekommen einen klaren Festpreis und einen konkreten Termin. Keine Stundenzettel, keine Überraschungen.</p>
-          </div>
-          <div className="step">
-            <span className="num">03 · ERLEDIGT</span>
-            <h3>Fachgerecht ausgeführt</h3>
-            <p>Unser festes Team arbeitet sauber, hinterlässt nichts und übergibt erst, wenn Sie zufrieden sind.</p>
-          </div>
+          {c.process.steps.map((s, i) => (
+            <div key={i} className="step">
+              <span className="num">{s.num}</span>
+              <h3>{s.h3}</h3>
+              <p>{s.p}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -245,19 +214,17 @@ const OVERVIEW = [
 ];
 
 function Gallery() {
+  const { c } = useI18n();
   return (
     <section id="referenzen" data-screen-label="Leistungs-Überblick">
       <div className="container">
         <div className="section-head">
           <div>
-            <span className="eyebrow">Alles auf einen Blick</span>
-            <h2>Unser komplettes<br/>Leistungsspektrum.</h2>
+            <span className="eyebrow">{c.overview.eyebrow}</span>
+            <h2>{c.overview.h2a}<br/>{c.overview.h2b}</h2>
           </div>
           <div className="lead">
-            <p>
-              Vom kurzen Einsatz bis zur kompletten Wohnungsrenovierung —
-              für all das ist Prime Tasks Ihr fester Ansprechpartner.
-            </p>
+            <p>{c.overview.lead}</p>
           </div>
         </div>
         <div className="icon-grid">
@@ -265,8 +232,8 @@ function Gallery() {
             <div key={i} className="icon-tile">
               <div className={`ic ${s.ic}`}>{s.icon}</div>
               <div>
-                <div className="t-cat">{s.cat}</div>
-                <div className="t-label">{s.label}</div>
+                <div className="t-cat">{c.overview.cats[s.cat]}</div>
+                <div className="t-label">{c.overview.labels[i]}</div>
               </div>
             </div>
           ))}
@@ -278,22 +245,17 @@ function Gallery() {
 
 // ─── Values ───
 function Values() {
+  const { c } = useI18n();
   return (
     <section data-screen-label="Werte" style={{paddingTop: 0}}>
       <div className="container">
         <div className="values">
-          <div className="value">
-            <div className="k">Schnell</div>
-            <p>Antwort auf Anfragen meist innerhalb von 4 Stunden. Bei Notdienst und akuten Fällen sind wir in der Regel innerhalb von 24 Stunden vor Ort im Münchner Stadtgebiet.</p>
-          </div>
-          <div className="value">
-            <div className="k">Sicher</div>
-            <p>Voll versichert, mit Festpreis-Garantie und ordentlicher Rechnung. Keine versteckten Kosten, keine Bargeld-Forderungen vor Ort.</p>
-          </div>
-          <div className="value">
-            <div className="k">Zuverlässig</div>
-            <p>Wir kommen zum vereinbarten Termin — pünktlich. Falls einmal etwas dazwischenkommt, melden wir uns rechtzeitig vorher.</p>
-          </div>
+          {c.values.map((v, i) => (
+            <div key={i} className="value">
+              <div className="k">{v.k}</div>
+              <p>{v.p}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -344,6 +306,7 @@ function CTA() {
 
 // ─── Footer ───
 function Footer() {
+  const { c } = useI18n();
   return (
     <footer data-screen-label="Footer">
       <div className="container">
@@ -351,42 +314,41 @@ function Footer() {
           <div>
             <BrandMark logoStyle="monogram" />
             <p style={{marginTop:16, color:'var(--ink-2)', fontSize:14, maxWidth:'32ch'}}>
-              Ihr Rundum-Service für Privathaushalte — für Haus und Wohnung, schnell, sicher und zuverlässig.
+              {c.footer.tagline}
             </p>
           </div>
           <div>
-            <h4>Leistungen</h4>
+            <h4>{c.footer.h4Leistungen}</h4>
             <ul>
-              <li><a href="#leistungen">Haus &amp; Reinigung</a></li>
-              <li><a href="#leistungen">Reparatur-Notdienst</a></li>
-              <li><a href="#leistungen">Montage</a></li>
-              <li><a href="#leistungen">Renovierung</a></li>
+              {c.footer.leistungenLinks.map((l, i) => (
+                <li key={i}><a href="#leistungen">{l}</a></li>
+              ))}
             </ul>
           </div>
           <div>
-            <h4>Unternehmen</h4>
+            <h4>{c.footer.h4Unternehmen}</h4>
             <ul>
-              <li><a href="#ablauf">Ablauf</a></li>
-              <li><a href="#referenzen">Überblick</a></li>
-              <li><a href="#kontakt">Kontakt</a></li>
+              <li><a href="#ablauf">{c.footer.unternehmenLinks[0]}</a></li>
+              <li><a href="#referenzen">{c.footer.unternehmenLinks[1]}</a></li>
+              <li><a href="#kontakt">{c.footer.unternehmenLinks[2]}</a></li>
             </ul>
           </div>
           <div>
-            <h4>Kontakt</h4>
+            <h4>{c.footer.h4Kontakt}</h4>
             <ul>
               <li>+49 1512 9778866</li>
               <li>info@primetasks.de</li>
-              <li>München &amp; Umgebung</li>
+              <li>{c.footer.region}</li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2026 Prime Tasks GmbH</span>
+          <span>{c.footer.copyright}</span>
           <span className="footer-legal">
             <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a>
           </span>
           <span className="footer-credit">
-            Designed by <a href="https://amano.agency" target="_blank" rel="noopener">Amano Agency</a>
+            {c.footer.designedBy} <a href="https://amano.agency" target="_blank" rel="noopener">Amano Agency</a>
           </span>
         </div>
       </div>
