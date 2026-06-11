@@ -1,0 +1,2 @@
+# www → ohne www (kanonische Domain, 301-Weiterleitung)
+https://www.primetasks.de/* https://primetasks.de/:splat 301

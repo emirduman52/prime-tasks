@@ -33,30 +33,60 @@ function BrandMark({ logoStyle }) {
 // ─── Navigation ───
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   const { c, lang, setLang } = useI18n();
+
+  const links = [
+    ['#leistungen', c.nav.leistungen],
+    ['#kostenrechner', c.nav.kostenrechner],
+    ['#ablauf', c.nav.ablauf],
+    ['#referenzen', c.nav.ueberblick],
+    ['#kontakt', c.nav.kontakt],
+  ];
+  const langSwitch = (
+    <div className="lang-switch" role="group" aria-label="Sprache / Language">
+      <button className={lang === 'de' ? 'active' : ''} aria-pressed={lang === 'de'} onClick={() => setLang('de')}>DE</button>
+      <button className={lang === 'en' ? 'active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
+    </div>
+  );
+
   return (
-    <nav className={`nav ${scrolled ? 'scrolled' : ''}`} data-screen-label="Navigation">
+    <nav className={`nav ${scrolled ? 'scrolled' : ''} ${menuOpen ? 'menu-open' : ''}`} data-screen-label="Navigation">
       <div className="container nav-inner">
         <BrandMark logoStyle="monogram" />
         <ul className="nav-links">
-          <li><a href="#leistungen">{c.nav.leistungen}</a></li>
-          <li><a href="#kostenrechner">{c.nav.kostenrechner}</a></li>
-          <li><a href="#ablauf">{c.nav.ablauf}</a></li>
-          <li><a href="#referenzen">{c.nav.ueberblick}</a></li>
-          <li><a href="#kontakt">{c.nav.kontakt}</a></li>
+          {links.map(([href, label]) => <li key={href}><a href={href}>{label}</a></li>)}
         </ul>
         <div className="nav-cta">
-          <div className="lang-switch" role="group" aria-label="Sprache / Language">
-            <button className={lang === 'de' ? 'active' : ''} aria-pressed={lang === 'de'} onClick={() => setLang('de')}>DE</button>
-            <button className={lang === 'en' ? 'active' : ''} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
-          </div>
+          {langSwitch}
           <a href="tel:+4915129778866" className="btn btn-ghost"><Icon.Phone/> +49 1512 9778866</a>
           <a href="#kontakt" className="btn btn-accent">{c.nav.cta}</a>
+        </div>
+        <button
+          className="nav-burger"
+          aria-label="Menü"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          <span/><span/><span/>
+        </button>
+      </div>
+
+      <div className={`nav-mobile ${menuOpen ? 'open' : ''}`}>
+        <ul>
+          {links.map(([href, label]) => (
+            <li key={href}><a href={href} onClick={() => setMenuOpen(false)}>{label}</a></li>
+          ))}
+        </ul>
+        <div className="nav-mobile-actions">
+          {langSwitch}
+          <a href="tel:+4915129778866" className="btn btn-ghost" onClick={() => setMenuOpen(false)}><Icon.Phone/> +49 1512 9778866</a>
+          <a href="#kontakt" className="btn btn-accent" onClick={() => setMenuOpen(false)}>{c.nav.cta}</a>
         </div>
       </div>
     </nav>
